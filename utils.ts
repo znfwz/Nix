@@ -1,6 +1,23 @@
 import { Item, UsageRecord } from './types';
 
 /**
+ * Generates a UUID v4 string.
+ * Uses crypto.randomUUID if available (Secure Contexts), falls back to Math.random otherwise.
+ */
+export function generateId(): string {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID();
+  }
+  
+  // Fallback for non-secure contexts (e.g., HTTP on LAN)
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    const r = Math.random() * 16 | 0;
+    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
+
+/**
  * Calculates the estimated days remaining for an item based on its consumption history.
  * Returns null if there isn't enough data to predict.
  */

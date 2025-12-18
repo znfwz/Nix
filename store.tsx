@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Item, InventoryContextType, UsageRecord, Theme } from './types';
+import { generateId } from './utils';
 
 const InventoryContext = createContext<InventoryContextType | undefined>(undefined);
 
@@ -68,7 +69,7 @@ export const InventoryProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const addItem = (newItemData: Omit<Item, 'id' | 'createdAt' | 'updatedAt' | 'usageHistory'>) => {
     const newItem: Item = {
       ...newItemData,
-      id: crypto.randomUUID(),
+      id: generateId(),
       createdAt: Date.now(),
       updatedAt: Date.now(),
       usageHistory: [],
