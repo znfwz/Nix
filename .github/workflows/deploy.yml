@@ -23,5 +23,5 @@ jobs:
       - run: npm ci
       - run: npm run build
       - run: npm install -g pinme
-      - run: pinme set-appkey "$231l3XIEpFSnJimJx4s9FoIARQo1-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZGRyIjoiMjMxbDN4aWVwZnNuamltang0czlmb2lhcnFvMSIsImV4cCI6MTc2ODk2MDI4N30.FtAbno8UaTnh62ZbXNiAhk0yfSDO5vol3Do1cpHyd9A"
-      - run: pinme upload dist --domain "https://nix2.pinit.eth.limo"
+      - run: pinme set-appkey "${{ secrets.PINME_APPKEY }}"
+      - run: pinme upload dist --domain "${{ secrets.PINME_DOMAIN }}"
