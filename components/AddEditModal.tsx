@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Save, Trash2, AlertTriangle } from 'lucide-react';
+import { X, Save, Trash2, AlertTriangle, Calendar } from 'lucide-react';
 import { Item } from '../types';
 import { useInventory } from '../store';
 
@@ -18,15 +18,25 @@ export const AddEditModal: React.FC<AddEditModalProps> = ({ isOpen, onClose, ini
     quantity: 1,
     unit: '个',
     threshold: 1,
+    expirationDate: '', // String format YYYY-MM-DD for input
   });
 
   useEffect(() => {
     if (initialData) {
+      // Convert timestamp to YYYY-MM-DD for date input
+      let dateStr = '';
+      if (initialData.expirationDate) {
+        const date = new Date(initialData.expirationDate);
+        // Ensure we get YYYY-MM-DD format correctly
+        dateStr = date.toISOString().split('T')[0];
+      }
+
       setFormData({
         name: initialData.name,
         quantity: initialData.quantity,
         unit: initialData.unit,
         threshold: initialData.threshold,
+        expirationDate: dateStr,
       });
     } else {
       setFormData({
@@ -34,6 +44,7 @@ export const AddEditModal: React.FC<AddEditModalProps> = ({ isOpen, onClose, ini
         quantity: 1,
         unit: '个',
         threshold: 1,
+        expirationDate: '',
       });
     }
   }, [initialData, isOpen]);
@@ -49,16 +60,30 @@ export const AddEditModal: React.FC<AddEditModalProps> = ({ isOpen, onClose, ini
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Convert date string back to timestamp (noon to avoid timezone shifting issues on display)
+    const expirationTimestamp = formData.expirationDate 
+      ? new Date(formData.expirationDate).getTime() 
+      : undefined;
+
+    const submissionData = {
+      name: formData.name,
+      quantity: formData.quantity,
+      unit: formData.unit,
+      threshold: formData.threshold,
+      expirationDate: expirationTimestamp,
+    };
+
     if (initialData) {
       // Keep the original targetQuantity when editing
       updateItem(initialData.id, {
-        ...formData,
+        ...submissionData,
         targetQuantity: initialData.targetQuantity
       });
     } else {
       // Set targetQuantity to the initial quantity when adding
       addItem({
-        ...formData,
+        ...submissionData,
         targetQuantity: formData.quantity
       });
     }
@@ -162,10 +187,12 @@ export const AddEditModal: React.FC<AddEditModalProps> = ({ isOpen, onClose, ini
               </div>
             </div>
 
-            <div className="bg-gray-50 dark:bg-zinc-800/50 p-4 rounded-xl">
+            {/* Threshold and Expiration */}
+            <div className="bg-gray-50 dark:bg-zinc-800/50 p-4 rounded-xl space-y-4">
+               {/* Threshold */}
                <div className="flex items-center justify-between">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">预警阈值</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-0.5">预警阈值</label>
                     <p className="text-[10px] text-gray-500 dark:text-gray-400">库存低于此数量时提醒补货</p>
                   </div>
                   <div className="w-24">
@@ -175,6 +202,31 @@ export const AddEditModal: React.FC<AddEditModalProps> = ({ isOpen, onClose, ini
                       value={formData.threshold}
                       onChange={e => setFormData({...formData, threshold: parseInt(e.target.value) || 0})}
                       className="w-full px-3 py-2 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg text-center font-mono text-gray-900 dark:text-gray-100"
+                    />
+                  </div>
+               </div>
+               
+               {/* Divider */}
+               <div className="h-px bg-gray-200 dark:bg-zinc-700"></div>
+
+               {/* Expiration Date */}
+               <div className="flex items-center justify-between">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-0.5">
+                      <div className="flex items-center gap-1">
+                        <Calendar size={14} className="text-secondary" />
+                        保质期
+                        <span className="text-[10px] font-normal text-secondary bg-gray-200 dark:bg-zinc-700 px-1.5 rounded ml-1">选填</span>
+                      </div>
+                    </label>
+                    <p className="text-[10px] text-gray-500 dark:text-gray-400">临期或过期时将会提醒</p>
+                  </div>
+                  <div className="w-36">
+                    <input
+                      type="date"
+                      value={formData.expirationDate}
+                      onChange={e => setFormData({...formData, expirationDate: e.target.value})}
+                      className="w-full px-3 py-2 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg text-center text-sm font-medium text-gray-900 dark:text-gray-100 min-h-[38px]"
                     />
                   </div>
                </div>

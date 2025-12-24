@@ -13,6 +13,7 @@ export interface Item {
   threshold: number; // Low stock warning level (e.g., when to buy)
   targetQuantity: number; // Stores the initial quantity (first added quantity) as the default restock amount
   unit: string; // e.g., "个", "包", "L"
+  expirationDate?: number; // Optional expiration timestamp
   usageHistory: UsageRecord[];
   createdAt: number;
   updatedAt: number;
@@ -29,4 +30,7 @@ export type InventoryContextType = {
   deleteItem: (id: string) => void;
   adjustQuantity: (id: string, delta: number) => void;
   restockItem: (id: string, newQuantity: number) => void;
+  undoLastAction: () => void;
+  lastAction: { description: string } | null;
+  importData: (items: Item[]) => void;
 };

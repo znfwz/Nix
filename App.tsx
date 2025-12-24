@@ -4,11 +4,13 @@ import { ItemCard } from './components/ItemCard';
 import { AddEditModal } from './components/AddEditModal';
 import { RestockModal } from './components/RestockModal';
 import { SettingsModal } from './components/SettingsModal';
+import { HistoryModal } from './components/HistoryModal';
+import { Toast } from './components/Toast';
 import { Item } from './types';
 import { Plus, Package, ShoppingBag, Check, Settings } from 'lucide-react';
 
 const AppContent: React.FC = () => {
-  const { items } = useInventory();
+  const { items, lastAction, undoLastAction } = useInventory();
   const [activeTab, setActiveTab] = useState<'inventory' | 'restock'>('inventory');
   
   // Modal states
@@ -17,6 +19,9 @@ const AppContent: React.FC = () => {
   
   const [isRestockModalOpen, setIsRestockModalOpen] = useState(false);
   const [restockItemData, setRestockItemData] = useState<Item | null>(null);
+
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+  const [historyItem, setHistoryItem] = useState<Item | null>(null);
 
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
@@ -35,7 +40,12 @@ const AppContent: React.FC = () => {
   const handleRestockClick = (item: Item) => {
     setRestockItemData(item);
     setIsRestockModalOpen(true);
-  }
+  };
+
+  const handleViewHistory = (item: Item) => {
+    setHistoryItem(item);
+    setIsHistoryOpen(true);
+  };
 
   return (
     <div className="min-h-screen bg-background dark:bg-zinc-950 text-primary dark:text-zinc-100 font-sans selection:bg-accent selection:text-white transition-colors duration-300">
@@ -79,7 +89,12 @@ const AppContent: React.FC = () => {
                   return b.updatedAt - a.updatedAt;
                 })
                 .map(item => (
-                  <ItemCard key={item.id} item={item} onEdit={handleEdit} />
+                  <ItemCard 
+                    key={item.id} 
+                    item={item} 
+                    onEdit={handleEdit} 
+                    onViewHistory={handleViewHistory}
+                  />
                 ))
             )}
           </div>
@@ -127,6 +142,13 @@ const AppContent: React.FC = () => {
           </div>
         )}
       </main>
+
+      {/* Undo Toast */}
+      <Toast 
+        isVisible={!!lastAction} 
+        message={lastAction?.description || ''} 
+        onUndo={undoLastAction} 
+      />
 
       {/* Bottom Navigation */}
       <nav className="fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-xl border-t border-gray-100/50 dark:border-zinc-800 px-6 pb-safe pt-2 z-40 transition-colors duration-300">
@@ -181,6 +203,12 @@ const AppContent: React.FC = () => {
         isOpen={isRestockModalOpen}
         onClose={() => setIsRestockModalOpen(false)}
         item={restockItemData}
+      />
+
+      <HistoryModal
+        isOpen={isHistoryOpen}
+        onClose={() => setIsHistoryOpen(false)}
+        item={historyItem}
       />
 
       <SettingsModal 
