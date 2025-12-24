@@ -1,0 +1,27 @@
+name: Deploy to PinMe
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+    inputs:
+      domain:
+        description: 'PinMe domain name'
+        required: true
+      build_dir:
+        description: 'Build directory'
+        default: 'dist'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: npm ci
+      - run: npm run build
+      - run: npm install -g pinme
+      - run: pinme set-appkey "$231l3XIEpFSnJimJx4s9FoIARQo1-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZGRyIjoiMjMxbDN4aWVwZnNuamltang0czlmb2lhcnFvMSIsImV4cCI6MTc2ODk2MDI4N30.FtAbno8UaTnh62ZbXNiAhk0yfSDO5vol3Do1cpHyd9A"
+      - run: pinme upload dist --domain "https://nix2.pinit.eth.limo"
