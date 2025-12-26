@@ -49,6 +49,17 @@ export const ItemCard: React.FC<ItemCardProps> = ({ item, onEdit, onViewHistory 
     return () => clearTimeout(timer);
   }, [item.quantity]);
 
+  const getActivityText = () => {
+    if (!lastActivity) return '无使用记录';
+    const timeStr = formatRelativeTime(lastActivity.timestamp);
+    switch (lastActivity.type) {
+      case 'restock': return `${timeStr}补过货`;
+      case 'consume': return `${timeStr}用过`;
+      case 'adjust': return `${timeStr}有变动`;
+      default: return `${timeStr}更新过`;
+    }
+  };
+
   return (
     <div 
       onClick={() => onViewHistory(item)}
@@ -106,12 +117,10 @@ export const ItemCard: React.FC<ItemCardProps> = ({ item, onEdit, onViewHistory 
                  <Calendar size={12} />
                  {expirationStatus.label}到期
                </span>
-            ) : lastActivity && lastActivity.type === 'consume' ? (
-               <span className="text-gray-400 dark:text-zinc-600">
-                 {formatRelativeTime(lastActivity.timestamp)}用过
-               </span>
             ) : (
-               <span className="text-gray-400 dark:text-zinc-600">无使用记录</span>
+               <span className="text-gray-400 dark:text-zinc-600">
+                 {getActivityText()}
+               </span>
             )}
           </div>
         </div>
