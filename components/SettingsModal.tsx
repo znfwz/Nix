@@ -194,19 +194,19 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm pointer-events-auto transition-opacity" onClick={onClose} />
+      <div className="absolute inset-0 bg-ink-main/20 dark:bg-black/60 backdrop-blur-sm pointer-events-auto transition-opacity" onClick={onClose} />
       
-      <div className="bg-white dark:bg-zinc-900 w-full max-w-sm mx-6 rounded-2xl p-6 shadow-2xl transform transition-all pointer-events-auto animate-in zoom-in-95 max-h-[90vh] overflow-y-auto no-scrollbar">
+      <div className="bg-surface dark:bg-surface-dark w-full max-w-sm mx-6 rounded-2xl p-6 shadow-2xl transform transition-all pointer-events-auto animate-in zoom-in-95 max-h-[90vh] overflow-y-auto no-scrollbar">
         <div className="flex justify-between items-center mb-6">
-          <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">设置</h3>
-          <button onClick={onClose} className="p-2 bg-gray-100 dark:bg-zinc-800 rounded-full hover:bg-gray-200 dark:hover:bg-zinc-700 transition-colors">
-            <X size={20} className="text-gray-600 dark:text-gray-400" />
+          <h3 className="text-xl font-bold text-ink-main dark:text-ink-mainDark">设置</h3>
+          <button onClick={onClose} className="p-2 bg-canvas dark:bg-canvas-dark rounded-full hover:bg-gray-200 dark:hover:bg-zinc-700 transition-colors">
+            <X size={20} className="text-ink-sec dark:text-ink-secDark" />
           </button>
         </div>
 
         {/* Appearance Section */}
         <div className="space-y-4 mb-8">
-            <p className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">外观模式</p>
+            <p className="text-xs font-bold text-ink-sec dark:text-ink-secDark uppercase tracking-wider">外观模式</p>
             <div className="space-y-2">
               {options.map((option) => (
                   <button
@@ -214,15 +214,15 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                       onClick={() => setTheme(option.value)}
                       className={`w-full flex items-center justify-between p-4 rounded-xl transition-all ${
                           theme === option.value 
-                          ? 'bg-primary text-white dark:bg-zinc-100 dark:text-zinc-900 shadow-md' 
-                          : 'bg-gray-50 dark:bg-zinc-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-750'
+                          ? 'bg-brand text-white dark:bg-brand-dark dark:text-white shadow-md' 
+                          : 'bg-canvas dark:bg-canvas-dark text-ink-sec dark:text-ink-secDark hover:bg-gray-200 dark:hover:bg-zinc-700'
                       }`}
                   >
                       <div className="flex items-center gap-3 font-medium">
                           {option.icon}
                           {option.label}
                       </div>
-                      {theme === option.value && <div className="w-2 h-2 rounded-full bg-accent"></div>}
+                      {theme === option.value && <div className="w-2 h-2 rounded-full bg-warning dark:bg-warning-dark"></div>}
                   </button>
               ))}
             </div>
@@ -230,23 +230,23 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
 
         {/* Data Management Section */}
         <div className="space-y-4">
-            <p className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">数据管理</p>
+            <p className="text-xs font-bold text-ink-sec dark:text-ink-secDark uppercase tracking-wider">数据管理</p>
             
             {/* 1. File Operations */}
             <div className="grid grid-cols-2 gap-3">
               <button 
                 onClick={handleCSVExport}
-                className="flex flex-col items-center justify-center p-4 bg-gray-50 dark:bg-zinc-800 rounded-xl hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors text-gray-700 dark:text-gray-300"
+                className="flex flex-col items-center justify-center p-4 bg-canvas dark:bg-canvas-dark rounded-xl hover:bg-gray-200 dark:hover:bg-zinc-700 transition-colors text-ink-sec dark:text-ink-secDark"
               >
-                 <Download size={24} className="mb-2 text-blue-500 dark:text-blue-400" />
+                 <Download size={24} className="mb-2 text-brand dark:text-brand-dark" />
                  <span className="text-xs font-medium">导出文件 (CSV)</span>
               </button>
               
               <button 
                 onClick={() => fileInputRef.current?.click()}
-                className="flex flex-col items-center justify-center p-4 bg-gray-50 dark:bg-zinc-800 rounded-xl hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors text-gray-700 dark:text-gray-300"
+                className="flex flex-col items-center justify-center p-4 bg-canvas dark:bg-canvas-dark rounded-xl hover:bg-gray-200 dark:hover:bg-zinc-700 transition-colors text-ink-sec dark:text-ink-secDark"
               >
-                 <Upload size={24} className="mb-2 text-blue-500 dark:text-blue-400" />
+                 <Upload size={24} className="mb-2 text-brand dark:text-brand-dark" />
                  <span className="text-xs font-medium">导入文件 (CSV/TXT)</span>
               </button>
               <input 
@@ -262,7 +262,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
             <div className="grid grid-cols-2 gap-3">
                <button 
                  onClick={handleCopyExport}
-                 className="flex flex-col items-center justify-center p-4 bg-gray-50 dark:bg-zinc-800 rounded-xl hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors text-gray-700 dark:text-gray-300 relative overflow-hidden"
+                 className="flex flex-col items-center justify-center p-4 bg-canvas dark:bg-canvas-dark rounded-xl hover:bg-gray-200 dark:hover:bg-zinc-700 transition-colors text-ink-sec dark:text-ink-secDark relative overflow-hidden"
                >
                   {copyFeedback ? (
                     <div className="absolute inset-0 bg-green-500 text-white flex flex-col items-center justify-center animate-in fade-in">
@@ -271,7 +271,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                     </div>
                   ) : (
                     <>
-                      <Copy size={24} className="mb-2 text-primary dark:text-zinc-100" />
+                      <Copy size={24} className="mb-2 text-brand dark:text-brand-dark" />
                       <span className="text-xs font-medium">复制数据 (文本)</span>
                     </>
                   )}
@@ -279,12 +279,12 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
 
                <button 
                  onClick={() => setIsPasteMode(!isPasteMode)}
-                 className={`flex flex-col items-center justify-center p-4 rounded-xl transition-colors text-gray-700 dark:text-gray-300 ${isPasteMode ? 'bg-primary text-white dark:bg-zinc-100 dark:text-zinc-900 ring-2 ring-primary dark:ring-zinc-400' : 'bg-gray-50 dark:bg-zinc-800 hover:bg-gray-100 dark:hover:bg-zinc-700'}`}
+                 className={`flex flex-col items-center justify-center p-4 rounded-xl transition-colors text-ink-sec dark:text-ink-secDark ${isPasteMode ? 'bg-brand text-white dark:bg-brand-dark dark:text-white ring-2 ring-brand dark:ring-brand-dark' : 'bg-canvas dark:bg-canvas-dark hover:bg-gray-200 dark:hover:bg-zinc-700'}`}
                >
                   {isPasteMode ? (
                      <FileText size={24} className="mb-2" />
                   ) : (
-                     <Clipboard size={24} className="mb-2 text-primary dark:text-zinc-100" />
+                     <Clipboard size={24} className="mb-2 text-brand dark:text-brand-dark" />
                   )}
                   <span className="text-xs font-medium">粘贴导入 (文本)</span>
                </button>
@@ -297,12 +297,12 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                   value={pasteContent}
                   onChange={(e) => setPasteContent(e.target.value)}
                   placeholder="在此处粘贴导出的 JSON 或 CSV 文本内容..."
-                  className="w-full h-32 p-3 text-xs bg-gray-50 dark:bg-black/40 border border-gray-200 dark:border-zinc-700 rounded-xl focus:ring-2 focus:ring-primary dark:focus:ring-zinc-500 outline-none resize-none font-mono mb-2"
+                  className="w-full h-32 p-3 text-xs bg-canvas dark:bg-canvas-dark border border-gray-200 dark:border-zinc-700 rounded-xl focus:ring-2 focus:ring-brand dark:focus:ring-brand-dark outline-none resize-none font-mono mb-2 text-ink-main dark:text-ink-mainDark"
                 />
                 <button 
                   onClick={handlePasteImport}
                   disabled={!pasteContent.trim()}
-                  className="w-full py-3 bg-primary dark:bg-zinc-100 text-white dark:text-zinc-900 rounded-xl font-bold text-sm hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-opacity flex items-center justify-center gap-2"
+                  className="w-full py-3 bg-brand dark:bg-brand-dark text-white rounded-xl font-bold text-sm hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-opacity flex items-center justify-center gap-2"
                 >
                   确认导入
                   <ChevronRight size={16} />
@@ -310,7 +310,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
               </div>
             )}
 
-            <p className="text-[10px] text-gray-400 dark:text-zinc-600 text-center leading-relaxed">
+            <p className="text-[10px] text-ink-sec dark:text-ink-secDark text-center leading-relaxed">
               支持 CSV 或 JSON 格式。导入将合并数据，相同 ID 的物品会被更新。<br/>
               文本模式适合手机间快速传输数据。
             </p>

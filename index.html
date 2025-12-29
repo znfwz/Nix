@@ -12,15 +12,46 @@
         theme: {
           extend: {
             colors: {
-              primary: '#18181b', // zinc-900
-              secondary: '#71717a', // zinc-500
-              accent: '#f43f5e', // rose-500
-              success: '#10b981', // emerald-500
-              background: '#f4f4f5', // zinc-100
-              surface: '#ffffff',
+              // Main Brand: Electric Blue / Interaction Blue
+              brand: {
+                DEFAULT: '#2D5BFF', 
+                hover: '#1E40CC',
+                dark: '#5483FF', // Lighter for dark mode
+                darkHover: '#769CFF'
+              },
+              // Alert/Warning: Lemon Yellow
+              warning: {
+                DEFAULT: '#FEE440', 
+                text: '#3F2E00', // Dark text for yellow bg
+                dark: '#FFD60A',
+                darkText: '#000000' 
+              },
+              // Backgrounds
+              canvas: {
+                DEFAULT: '#F2F4F7', // Light Gray for better contrast with white cards
+                dark: '#0D1117'     // Deep Midnight Blue-Grey
+              },
+              // Card Surfaces
+              surface: {
+                DEFAULT: '#FFFFFF', // Pure White for cards
+                dark: '#1E232F'     // Lighter Blue-Grey
+              },
+              // Typography
+              ink: {
+                main: '#0F172A',      // Slate 900 (Black-ish)
+                mainDark: '#F0F6FC',  // Cold White (95%)
+                sec: '#64748B',       // Slate 500
+                secDark: '#8B949E'    // Cold Grey
+              },
+              // Keeping legacy utility colors but aligning them to the theme
+              success: '#10b981',
             },
             fontFamily: {
               sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+            },
+            boxShadow: {
+              'glow': '0 0 20px -5px rgba(45, 91, 255, 0.5)',
+              'glow-dark': '0 0 20px -5px rgba(84, 131, 255, 0.4)',
             }
           }
         }
@@ -28,11 +59,11 @@
     </script>
     <style>
       body {
-        background-color: #f4f4f5;
+        background-color: #F2F4F7;
         -webkit-tap-highlight-color: transparent;
       }
       .dark body {
-        background-color: #09090b; /* zinc-950 */
+        background-color: #0D1117;
       }
       /* Hide scrollbar for clean UI in horizontal lists */
       .no-scrollbar::-webkit-scrollbar {

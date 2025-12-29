@@ -63,22 +63,22 @@ export const ItemCard: React.FC<ItemCardProps> = ({ item, onEdit, onViewHistory 
   return (
     <div 
       onClick={() => onViewHistory(item)}
-      className="bg-white dark:bg-zinc-900 rounded-2xl p-5 shadow-sm border border-gray-100 dark:border-zinc-800 relative overflow-hidden transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 active:scale-[0.99] cursor-pointer group"
+      className="bg-surface dark:bg-surface-dark rounded-2xl p-5 shadow-[0_1px_3px_0_rgba(0,0,0,0.05)] dark:shadow-none border border-transparent dark:border-zinc-800/50 relative overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.99] cursor-pointer group"
     >
-      {/* Low Stock Indicator Stripe */}
+      {/* Low Stock Indicator Stripe - Using Warning Yellow */}
       {isLowStock && (
-        <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-accent"></div>
+        <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-warning dark:bg-warning-dark"></div>
       )}
 
       <div className="flex justify-between items-start mb-4 pl-2">
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
-            <h3 className="text-lg font-bold text-gray-900 dark:text-zinc-100 leading-tight">{item.name}</h3>
+            <h3 className="text-lg font-bold text-ink-main dark:text-ink-mainDark leading-tight">{item.name}</h3>
             
             {/* Dedicated Edit Button */}
             <button 
               onClick={(e) => { e.stopPropagation(); onEdit(item); }}
-              className="p-1.5 rounded-full text-gray-300 hover:text-primary hover:bg-gray-100 dark:text-zinc-600 dark:hover:text-zinc-300 dark:hover:bg-zinc-800 transition-colors"
+              className="p-1.5 rounded-full text-ink-sec hover:text-brand hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors"
             >
               <Pencil size={14} />
             </button>
@@ -95,30 +95,30 @@ export const ItemCard: React.FC<ItemCardProps> = ({ item, onEdit, onViewHistory 
             )}
           </div>
           
-          <div className="flex flex-wrap items-center gap-y-1 gap-x-2 text-xs text-secondary dark:text-zinc-400">
+          <div className="flex flex-wrap items-center gap-y-1 gap-x-2 text-xs text-ink-sec dark:text-ink-secDark">
             {/* Usage Prediction */}
             {daysRemaining !== null ? (
-              <span className={`flex items-center gap-1 font-medium ${daysRemaining <= 3 ? 'text-accent' : 'text-blue-600 dark:text-blue-400'}`}>
+              <span className={`flex items-center gap-1 font-medium ${daysRemaining <= 3 ? 'text-warning-text dark:text-warning-dark' : 'text-brand dark:text-brand-dark'}`}>
                 <Clock size={12} />
                 预计 {daysRemaining} 天
               </span>
             ) : (
-              <span className="flex items-center gap-1 text-gray-400 dark:text-zinc-500">
+              <span className="flex items-center gap-1 text-ink-sec/70">
                 <Clock size={12} />
                 计算中...
               </span>
             )}
             
-            <span className="text-gray-300 dark:text-zinc-700">|</span>
+            <span className="text-gray-200 dark:text-zinc-700">|</span>
 
             {/* Last Activity or Expiration Info */}
             {expirationStatus?.color === 'neutral' ? (
-               <span className="flex items-center gap-1 text-gray-400 dark:text-zinc-500">
+               <span className="flex items-center gap-1 text-ink-sec/70">
                  <Calendar size={12} />
                  {expirationStatus.label}到期
                </span>
             ) : (
-               <span className="text-gray-400 dark:text-zinc-600">
+               <span className="text-ink-sec/70">
                  {getActivityText()}
                </span>
             )}
@@ -126,9 +126,10 @@ export const ItemCard: React.FC<ItemCardProps> = ({ item, onEdit, onViewHistory 
         </div>
 
         <div className="flex flex-col items-end">
-           <span className={`text-2xl font-mono font-bold tracking-tight transition-transform duration-200 origin-right ${isLowStock ? 'text-accent' : 'text-primary dark:text-zinc-100'} ${isBumped ? 'scale-125' : 'scale-100'}`}>
+           {/* Quantity: Black in light mode, White in dark mode. Warning color if low stock. */}
+           <span className={`text-2xl font-mono font-bold tracking-tight transition-transform duration-200 origin-right ${isLowStock ? 'text-warning-text dark:text-warning-dark' : 'text-ink-main dark:text-white'} ${isBumped ? 'scale-125' : 'scale-100'}`}>
              {item.quantity}
-             <span className="text-sm font-normal text-secondary dark:text-zinc-500 ml-1">{item.unit}</span>
+             <span className="text-sm font-normal text-ink-sec dark:text-ink-secDark ml-1">{item.unit}</span>
            </span>
         </div>
       </div>
@@ -137,17 +138,17 @@ export const ItemCard: React.FC<ItemCardProps> = ({ item, onEdit, onViewHistory 
       <div className="flex items-center justify-between gap-4 mt-2 pl-2">
         <div className="flex items-center gap-2">
              {isLowStock && (
-               <div className="flex items-center gap-1 text-xs font-medium text-accent bg-red-50 dark:bg-red-900/20 px-2 py-1 rounded-full animate-pulse">
+               <div className="flex items-center gap-1 text-xs font-bold text-warning-text bg-warning dark:bg-warning-dark dark:text-warning-darkText px-2 py-1 rounded-full animate-pulse">
                  <AlertCircle size={12} />
                  补货
                </div>
              )}
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <button 
             onClick={(e) => { e.stopPropagation(); adjustQuantity(item.id, -1); }}
-            className="w-12 h-10 flex items-center justify-center rounded-xl bg-gray-100 dark:bg-zinc-800 text-gray-700 dark:text-zinc-300 hover:bg-gray-200 dark:hover:bg-zinc-700 active:bg-gray-300 dark:active:bg-zinc-600 active:scale-90 transition-all duration-200"
+            className="w-12 h-10 flex items-center justify-center rounded-xl bg-canvas dark:bg-canvas-dark border border-transparent dark:border-zinc-700 text-ink-sec dark:text-ink-secDark hover:bg-gray-200 dark:hover:bg-zinc-800 active:scale-95 transition-all duration-200"
             aria-label="Decrease quantity"
           >
             <Minus size={20} />
@@ -155,10 +156,10 @@ export const ItemCard: React.FC<ItemCardProps> = ({ item, onEdit, onViewHistory 
           
           <button 
             onClick={(e) => { e.stopPropagation(); adjustQuantity(item.id, 1); }}
-            className="w-12 h-10 flex items-center justify-center rounded-xl bg-gray-100 dark:bg-zinc-800 text-gray-700 dark:text-zinc-300 hover:bg-gray-200 dark:hover:bg-zinc-700 active:bg-gray-300 dark:active:bg-zinc-600 active:scale-90 transition-all duration-200"
+            className="w-12 h-10 flex items-center justify-center rounded-xl bg-canvas dark:bg-canvas-dark border border-transparent dark:border-zinc-700 text-brand dark:text-brand-dark hover:bg-brand/10 dark:hover:bg-brand-dark/10 active:scale-95 transition-all duration-200"
              aria-label="Increase quantity"
           >
-            <Plus size={20} />
+            <Plus size={20} strokeWidth={2.5} />
           </button>
         </div>
       </div>
