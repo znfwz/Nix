@@ -12,12 +12,12 @@
         theme: {
           extend: {
             colors: {
-              // Main Brand: Electric Blue / Interaction Blue
+              // Main Brand: Sage Green
               brand: {
-                DEFAULT: '#2D5BFF', 
-                hover: '#1E40CC',
-                dark: '#5483FF', // Lighter for dark mode
-                darkHover: '#769CFF'
+                DEFAULT: '#769A8E', 
+                hover: '#5D7A70', // Darker shade for hover
+                dark: '#93B2A8', // Lighter for dark mode visibility
+                darkHover: '#AEC8BF' // Even lighter for dark mode hover
               },
               // Alert/Warning: Lemon Yellow
               warning: {
@@ -50,8 +50,8 @@
               sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
             },
             boxShadow: {
-              'glow': '0 0 20px -5px rgba(45, 91, 255, 0.5)',
-              'glow-dark': '0 0 20px -5px rgba(84, 131, 255, 0.4)',
+              'glow': '0 0 20px -5px rgba(118, 154, 142, 0.5)', // Greenish glow
+              'glow-dark': '0 0 20px -5px rgba(147, 178, 168, 0.4)',
             }
           }
         }
@@ -87,5 +87,6 @@
 </head>
   <body>
     <div id="root"></div>
+    <script type="module" src="./index.tsx"></script>
   </body>
 </html>
